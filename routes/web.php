@@ -35,3 +35,13 @@ Route::get('/', function () {
 //Thank you for being on hold.I really appreciate! As I checked the subdomains will not be created  automatically Marco, using an API will not work, that will need root access.
 
 
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
