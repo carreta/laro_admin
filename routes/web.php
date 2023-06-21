@@ -24,7 +24,8 @@ Route::get('/', function () {
     // $resultado = substr($route, $posicion_barra + 2, $posicion_punto - $posicion_barra - 2);
 
     // dd($resultado);
-    return 'Aquí no es.';
+    // return 'Aquí no es.';
+    return view('welcome');
 });
 
 

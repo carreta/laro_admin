@@ -45,9 +45,9 @@ class RouteServiceProvider extends ServiceProvider
 
         $resultado = substr($route, $posicion_barra + 2, $posicion_punto - $posicion_barra - 2);
         
-        Route::domain('service.' . env('APP_URL'))
-                ->middleware('web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/blog.php'));
+        // Route::domain('service.' . env('APP_URL'))
+        //         ->middleware('web')
+        //         ->namespace($this->namespace)
+        //         ->group(base_path('routes/blog.php'));
     }
 }
