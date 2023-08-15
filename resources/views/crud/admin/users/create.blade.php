@@ -17,7 +17,7 @@
 			    </div>
 			    <div class="form-group @if($errors->has('name')) has-error @endif ">
 			      <label for="email">Correo:</label>
-				  <input type="text" name="email" class="form-control" placeholder="Correo">
+				  {{ html()->email('email')->placeholder('Your e-mail address')->class('form-control') }}
 			      @if($errors->has('email'))<p style="color: red;" class="form-text"> {{ $errors->first('email') }} </p>  @endif
 			    </div>
 			    <div class="form-group @if($errors->has('name')) has-error @endif ">
