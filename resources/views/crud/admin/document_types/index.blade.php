@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<h3>Mantenimiento de usuario</h3>
+<h3>Mantenimiento de tipos de documentos</h3>
 <hr>
 
 <div class="container-table">
@@ -23,7 +23,7 @@
       </div>
     
       <div class="float-end">
-        <a href='{{ url("/users" . "/create") }}' class="btn btn-outline-success" title="Nuevo"><span class="fa fa-plus"></span></a>
+        <a href='{{ url("/document_types" . "/create") }}' class="btn btn-outline-success" title="Nuevo"><span class="fa fa-plus"></span></a>
         <!-- <a href='https://alvaro.site.co.cr/uid/1/users/excel' class="btn btn-outline-info" target="_blank" data-target="export" title="Exportar resultados a Excel" ><span class="fas fa-file-excel"></span></a> -->
       </div>
     </div>
@@ -32,28 +32,14 @@
         <thead>
           <tr>
            <th>Nombre</th>
-           <th>Correo</th>
-           <th>Role</th>
            <th></th>
            <th></th>
           </tr>
         </thead>
         <tbody>
-          @foreach($users as $user)
-         <tr>
-           <td><img src="#" width="40" height="40" style="border-radius: 50%; border: 1px solid #2C60AF; overflow: hidden;"> {{ $user->name }}</td>
-           <td>{{ $user->email }}</td>
-           <td>Admin</td>
-           <td width="40"><a href="{{action('App\Http\Controllers\crud\admin\users\UserController' . '@edit', [$user->id])}}" class="btn btn-outline-secondary" title="Editar"><span class="fas fa-pencil-alt"></span></a></td>
-	       <td width="40">
-	         <form action="{{action('App\Http\Controllers\crud\admin\users\UserController' . '@destroy', [$user->id])}}" method="post">
-	           {{csrf_field()}}
-	           <input name="_method" type="hidden" value="DELETE">
-	           <button class="btn btn-outline-danger" type="submit" title="Borrar"><span class="fa fa-times"></span></button>
-	         </form>
-	       </td>
-         </tr>
-          @endforeach
+          <tr>
+            <td>{{ $this->name }}</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -77,7 +63,7 @@
         
     
       <div class="float-end">
-        <a href="#" class="btn btn-outline-success" title="Nuevo"><span class="fa fa-plus "></span></a>
+        <a href='{{ url("/document_types" . "/create") }}' class="btn btn-outline-success" title="Nuevo"><span class="fa fa-plus "></span></a>
         <!-- <a href="https://alvaro.site.co.cr/users/excel" class="btn btn-default btnExport" target="_blank" data-target="export" title="Exportar resultados a Excel" ><span class="fa fa-file-excel-o "></span></a> -->
         <!--button class="btn btn-primary btnNew" data-target="new" title="Crear nuevo"><span class="fa fa-plus "></span></button-->
       </div>

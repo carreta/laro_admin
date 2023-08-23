@@ -22,7 +22,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('crud.admin.users.create');
+        $companies = DB::select(SELECT `id`, `name` FROM `companies`);
+
+        return view('crud.admin.users.create', compact('companies-'));
     }
 
     /**
@@ -60,7 +62,7 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         DB::update("UPDATE `users` SET `name` = '" . $request->name . "', `email` = '" . $request->email . "', `password` = '" . $request->password . "' WHERE `id` = '" . $id . "' ");
-        
+
         $users = DB::select("SELECT `id`, `name`, `email`  FROM `users`");
         return view('crud.admin.users.index', compact('users'));
     }

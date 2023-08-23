@@ -1,0 +1,15 @@
+Las compañías tienen comercios y lo comercios tienen clientes.
+Los comercios tienen productos, y los productos los compran clientes.
+Los artículos llevan el cavis y tiene que facturar electrónicamente.
+Además de las actividades económicas de la empresa.
+
+*Los campos de compañías y comercios son los mismos.
+Hay que configurar: credenciales de ATV, teléfonos, direcciones de correo.
+
+Poner la seguridad en el construct de los controllers
+
+Validar si se pueden borrar cosas en el delete.
+
+Poner mensajes en la vista después de guardar, editar o eliminar.
+
+Usar eloquent para los mantenimientos sencillos.

@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\crud\admin\users\UserController;
+use App\Http\Controllers\crud\admin\CompanyController;
+use App\Http\Controllers\crud\admin\DocumentTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,12 +39,12 @@ Route::get('/', function () {
 
 
 
-Route::middleware([
-    'auth:sanctum', config('jetstream.auth_session'), 'verified'
-])->group(function () {
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
     Route::resource('users', UserController::class);
+    Route::resource('companies', CompanyController::class);
+    Route::resource('document_types', DocumentTypeController::class);
 });
