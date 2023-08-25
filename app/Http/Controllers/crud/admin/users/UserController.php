@@ -22,7 +22,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $companies = DB::select(SELECT `id`, `name` FROM `companies`);
+        $companies = DB::select("SELECT `id`, `name` FROM `companies`");
 
         return view('crud.admin.users.create', compact('companies-'));
     }

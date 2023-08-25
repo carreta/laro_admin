@@ -5,13 +5,18 @@ namespace App\Http\Controllers\crud\admin;
 use App\Http\Controllers\Controller;
 use DB;
 use Illuminate\Http\Request;
+use App\Models\crud\admin\DocumentType;
 
 class DocumentTypeController extends Controller
 {
 
     public function __construct()
     {
-        $this->document_types = DB::select("SELECT `id`, `name` FROM `document_types`");
+        $this->middleware('can:crud.admin.document_types.index')->only('index');
+        $this->middleware('can:crud.admin.document_types.create')->only('create', 'store');
+        $this->middleware('can:crud.admin.document_types.edit')->only('edit', 'update');
+        $this->middleware('can:crud.admin.document_types.destroy')->only('destroy');
+        $this->document_types = DocumentType::select('hacienda_id', 'name')->Paginate(1);
     }
     
     /**
@@ -20,7 +25,7 @@ class DocumentTypeController extends Controller
     public function index()
     {
         $document_types = $this->document_types;
-        return view('crud.admin.document_types.index', $document_types);
+        return view('crud.admin.document_types.index', compact('document_types'));
     }
 
     /**

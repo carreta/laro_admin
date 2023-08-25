@@ -13,3 +13,5 @@ Validar si se pueden borrar cosas en el delete.
 Poner mensajes en la vista después de guardar, editar o eliminar.
 
 Usar eloquent para los mantenimientos sencillos.
+
+Poner la paginación, y buscar como hacer para que reciba parámetros.
