@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\crud\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\crud\admin\DocumentType;
+use App\Models\ViewField;
 use DB;
 use Illuminate\Http\Request;
-use App\Models\crud\admin\DocumentType;
+use Spatie\Permission\Models\Permission;
 
 class DocumentTypeController extends Controller
 {
@@ -16,7 +18,10 @@ class DocumentTypeController extends Controller
         $this->middleware('can:crud.admin.document_types.create')->only('create', 'store');
         $this->middleware('can:crud.admin.document_types.edit')->only('edit', 'update');
         $this->middleware('can:crud.admin.document_types.destroy')->only('destroy');
-        $this->document_types = DocumentType::select('hacienda_id', 'name')->Paginate(1);
+        $this->document_types = DocumentType::select('hacienda_id', 'name')->paginate(15);
+        $this->view_fields = ViewField::select('route', 'field_names', 'table_names', 'view_name')->where('route', 'document_types')->get();
+        $this->permissions = Permission::select('name')->where('name', 'LIKE', "%crud.admin.document_types%")->OrderBy('id', 'ASC')->get();
+        $this->controller = 'App\Http\Controllers\crud\admin\DocumentTypeController';
     }
     
     /**
@@ -25,7 +30,18 @@ class DocumentTypeController extends Controller
     public function index()
     {
         $document_types = $this->document_types;
-        return view('crud.admin.document_types.index', compact('document_types'));
+        $view_fields = $this->view_fields[0];
+        $controller = $this->controller;
+        $permissions = $this->permissions;
+        
+        $array = $view_fields->field_names;
+        $field_names = explode(",", $array);
+
+        $array = $view_fields->table_names;
+        $table_names = explode(",", $array);
+
+        // dd($permissions[0] . ' - ' . $permissions[1] . ' - ' . $permissions[3] . ' - ' . $permissions[5]);
+        return view('crud.admin.document_types.index', compact('document_types', 'view_fields', 'controller', 'permissions', 'field_names', 'table_names'));
     }
 
     /**

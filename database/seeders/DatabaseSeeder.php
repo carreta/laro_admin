@@ -18,6 +18,12 @@ class DatabaseSeeder extends Seeder
         // Usuarios base
             $this->call(UserSeeder::class);
 
+        // Document types
+            $this->call(DocumentTypeSeeder::class);
+
+        // View fields
+            $this->call(ViewFieldSeeder::class);
+
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

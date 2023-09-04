@@ -43,13 +43,13 @@
            <td>{{ $company->name }}</td>
            <td>{{ $company->address }}</td>
            <td width="40"><a href="{{action('App\Http\Controllers\crud\admin\companies\CompanyController' . '@edit', [$company->id])}}" class="btn btn-outline-secondary" title="Editar"><span class="fas fa-pencil-alt"></span></a></td>
-	       <td width="40">
-	         <form action="{{action('App\Http\Controllers\crud\admin\companies\CompanyController' . '@destroy', [$company->id])}}" method="post">
-	           {{csrf_field()}}
-	           <input name="_method" type="hidden" value="DELETE">
-	           <button class="btn btn-outline-danger" type="submit" title="Borrar"><span class="fa fa-times"></span></button>
-	         </form>
-	       </td>
+  	       <td width="40">
+  	         <form action="{{action('App\Http\Controllers\crud\admin\companies\CompanyController' . '@destroy', [$company->id])}}" method="post">
+  	           {{csrf_field()}}
+  	           <input name="_method" type="hidden" value="DELETE">
+  	           <button class="btn btn-outline-danger" type="submit" title="Borrar"><span class="fa fa-times"></span></button>
+  	         </form>
+  	       </td> 
          </tr>
           @endforeach
         </tbody>
