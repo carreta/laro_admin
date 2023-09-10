@@ -18,7 +18,7 @@ class DocumentTypeController extends Controller
         $this->middleware('can:crud.admin.document_types.create')->only('create', 'store');
         $this->middleware('can:crud.admin.document_types.edit')->only('edit', 'update');
         $this->middleware('can:crud.admin.document_types.destroy')->only('destroy');
-        $this->document_types = DocumentType::select('hacienda_id', 'name')->paginate(15);
+        $this->collection = DocumentType::select('hacienda_id', 'name')->paginate(15);
         $this->view_fields = ViewField::select('route', 'field_names', 'table_names', 'view_name')->where('route', 'document_types')->get();
         $this->permissions = Permission::select('name')->where('name', 'LIKE', "%crud.admin.document_types%")->OrderBy('id', 'ASC')->get();
         $this->controller = 'App\Http\Controllers\crud\admin\DocumentTypeController';
@@ -29,7 +29,7 @@ class DocumentTypeController extends Controller
      */
     public function index()
     {
-        $document_types = $this->document_types;
+        $collection = $this->collection;
         $view_fields = $this->view_fields[0];
         $controller = $this->controller;
         $permissions = $this->permissions;
@@ -41,7 +41,7 @@ class DocumentTypeController extends Controller
         $table_names = explode(",", $array);
 
         // dd($permissions[0] . ' - ' . $permissions[1] . ' - ' . $permissions[3] . ' - ' . $permissions[5]);
-        return view('crud.admin.document_types.index', compact('document_types', 'view_fields', 'controller', 'permissions', 'field_names', 'table_names'));
+        return view('crud.admin.document_types.index', compact('collection', 'view_fields', 'controller', 'permissions', 'field_names', 'table_names'));
     }
 
     /**
@@ -57,8 +57,21 @@ class DocumentTypeController extends Controller
      */
     public function store(Request $request)
     {
+
+        $collection = $this->collection;
+        $view_fields = $this->view_fields[0];
+        $controller = $this->controller;
+        $permissions = $this->permissions;
+        
+        $array = $view_fields->field_names;
+        $field_names = explode(",", $array);
+
+        $array = $view_fields->table_names;
+        $table_names = explode(",", $array);
+
         DB::insert("INSERT INTO `document_types` (`name`, `hacienda_id`) VALUES ('" . $request->name . "', '" . $request->hacienda_id . "') ");
-        return view('crud.admin.document_types.index', compact('document_types'));
+        return redirect('document_types')->with('status', 'saved', 'collection', 'view_fields', 'controller', 'permissions', 'field_names', 'table_names');
+        // return view('crud.admin.document_types.index', compact('document_types', 'view_fields', 'controller', 'permissions', 'field_names', 'table_names'))->withSuccess('LALA');
     }
 
     /**
@@ -74,8 +87,15 @@ class DocumentTypeController extends Controller
      */
     public function edit(string $id)
     {
-        $document_types = DB::select("SELECT `id`, `name`, `hacienda_id` FROM `document_types` WHERE `id` = '" . $id . "' ");
-        return view('crud.admin.document_types.edit', compact('document_types', 'id'));   
+        $view_fields = $this->view_fields[0];
+
+        try {
+            // $document_types = DB::select("SELECT `hacienda_id`, `name` FROM `document_types` WHERE `hacienda_id` = '" . $id . "' ");            
+            $document_types = DocumentType::select('hacienda_id', 'name')->where('hacienda_id', $id)->get();
+            return view('crud.admin.document_types.edit', compact('document_types', 'id', 'view_fields'));
+        } catch (\Exception $e) {
+            dd($e);
+        }
     }
 
     /**
@@ -83,9 +103,8 @@ class DocumentTypeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        DB::update("UPDATE `document_types` SET `hacienda_id` = '" . $request->hacienda_id . "', `name` = '" . $request->name . "' WHERE `id` = '" . $id . "' ");
-
-        return view('crud.admin.document_types.index', compact('document_types'));
+        DB::update("UPDATE `document_types` SET `name` = '" . $request->name . "' WHERE `hacienda_id` = '" . $id . "' ");
+        return redirect('document_types')->with('status', 'updated');
     }
 
     /**
@@ -93,7 +112,25 @@ class DocumentTypeController extends Controller
      */
     public function destroy(string $id)
     {
-        DB::delete("DELETE FROM `document_types` WHERE `id` = '" . $id . "' ");
-        return view('crud.admin.document_types.index', compact('document_types'));
+        $collection = $this->collection;
+        $view_fields = $this->view_fields[0];
+        $controller = $this->controller;
+        $permissions = $this->permissions;
+        
+        $array = $view_fields->field_names;
+        $field_names = explode(",", $array);
+
+        $array = $view_fields->table_names;
+        $table_names = explode(",", $array);
+
+
+        try {
+
+            
+            return redirect('document_types')->with('status', 'deleted', 'collection', 'view_fields', 'controller', 'permissions', 'field_names', 'table_names');
+        } catch (\Exception $e) {
+            dd($e);
+        }
+
     }
 }

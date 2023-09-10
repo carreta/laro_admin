@@ -10,12 +10,12 @@
       </tr>
     </thead>
     <tbody>
-      @for($i = 0; $i < count($item); $i++)
+      @for($i = 0; $i < count($collection); $i++)
         <tr>
           @for($j = 0; $j < count($tablenames); $j++)
-            <td>{{ $item[$i][$tablenames[$j]] }}</td>
+            <td>{{ $collection[$i][$tablenames[$j]] }}</td>
             @php
-              $id = $item[$i][$tablenames[0]];
+              $id = $collection[$i][$tablenames[0]];
             @endphp
           @endfor
           <td width="40">

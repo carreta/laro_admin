@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<h3>Mantenimiento de tipos de documentos</h3>
+<h3>{{$view_fields->view_name}}</h3>
 <hr>
 
 <div class="container">
@@ -14,9 +14,9 @@
 			  <input type="text" name="name" class="form-control" placeholder="Nombre" maxlength="200" required value="{{ $document_types[0]->name }}">
 		      @if($errors->has('name'))<p style="color: red;" class="form-text"> {{ $errors->first('name') }} </p>  @endif
 		    </div>
-		    <div class="form-group @if($errors->has('hacienda_id')) has-error @endif ">
+		    <div class="form-group @if($errors->has('hacienda_id')) has-error @endif">
 		      <label for="hacienda_id">Código de hacienda:</label>
-			  <input type="text" name="hacienda_id" class="form-control" placeholder="Código de hacienda" maxlength="5" required value="{{ $document_types[0]->hacienda_id }}">
+			  <input type="text" name="hacienda_id" class="form-control" placeholder="Código de hacienda" maxlength="5" required value="{{ $document_types[0]->hacienda_id }}" disabled="disabled">
 		      @if($errors->has('hacienda_id'))<p style="color: red;" class="form-text"> {{ $errors->first('hacienda_id') }} </p>  @endif
 		    </div>
 	    </div>

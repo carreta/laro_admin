@@ -6,16 +6,13 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Table extends Component
+class Alert extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public $collection,
-        public $fieldnames,
-        public $tablenames,
-        public $controller,
+        public $item,
     )
     {}
 
@@ -24,6 +21,6 @@ class Table extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.table');
+        return view('components.alert');
     }
 }

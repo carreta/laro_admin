@@ -4,10 +4,12 @@
 <h3>{{$view_fields->view_name}}</h3>
 <hr>
 
+<x-alert :item="session('status')" />
+
 <div class="container-table">
   <div class="card">
     <div class="card-header">
-      <x-pagination :item="$document_types"/>
+      <x-pagination :collection="$collection"/>
     
       <div class="float-end">
         @can($permissions[1])
@@ -16,10 +18,10 @@
       </div>
     </div>
     
-    <x-table :item="$document_types" :fieldnames="$field_names" :tablenames="$table_names" :controller="$controller"  />
+    <x-table :collection="$collection" :fieldnames="$field_names" :tablenames="$table_names" :controller="$controller"  />
 
     <div class="card-footer">
-      <x-pagination :item="$document_types"/>
+      <x-pagination :collection="$collection"/>
       
       <div class="float-end">
         @can($permissions[1])

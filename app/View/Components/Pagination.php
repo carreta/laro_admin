@@ -13,7 +13,7 @@ class Pagination extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public $item
+        public $collection
     )
     {}
 
