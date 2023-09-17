@@ -11,33 +11,32 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::create('companies', function (Blueprint $table) {
-        //     $table->integer('id');
-        //     $table->integer('holding_id');
-        //     $table->string('name', 200);
-        //     $table->string('business_name', 200);
-        //     $table->string('tradename', 200);
-        //     $table->string('director', 200);
-        //     $table->string('logo', 200);
-        //     $table->string('document', 50);
-        //     $table->integer('document_type_id');
-        //     $table->text('address');
-        //     $table->string('email', 255);
-        //     $table->string('geo_latitud', 20);
-        //     $table->string('geo_longitud', 20);
-        //     $table->integer('geo_country_id');
-        //     $table->integer('geo_state_id');
-        //     $table->integer('geo_region_id');
-        //     $table->integer('geo_district_id');
-        //     $table->integer('geo_suburb_id');
-        //     $table->integer('company_type_id');
-        //     $table->integer('customer_module_id');
-        //     $table->integer('apply_taxes');
-        //     $table->integer('apply_contracts')->default(2);
-        //     $table->integer('active_id');
-        //     $table->timestamp('created_at')->default('current_timestamp');
-        //     $table->timestamp('updated_at')->default('0000-00-00 00:00:00');
-        // });
+        Schema::create('companies', function (Blueprint $table) {
+            $table->integer('id')->primary();
+            $table->integer('holding_id');
+            $table->string('name', 200);
+            $table->string('business_name', 200);
+            $table->string('tradename', 200);
+            $table->string('director', 200);
+            $table->string('logo', 200);
+            $table->string('document', 50);
+            $table->integer('document_type_id');
+            $table->text('address');
+            $table->string('email', 255);
+            $table->string('geo_latitud', 20);
+            $table->string('geo_longitud', 20);
+            $table->integer('geo_country_id');
+            $table->integer('geo_state_id');
+            $table->integer('geo_region_id');
+            $table->integer('geo_district_id');
+            $table->integer('geo_suburb_id');
+            $table->integer('company_type_id');
+            $table->integer('customer_module_id');
+            $table->integer('apply_taxes');
+            $table->integer('apply_contracts')->default(2);
+            $table->integer('active_id');
+            $table->timestamps();
+        });
     }
 
     /**

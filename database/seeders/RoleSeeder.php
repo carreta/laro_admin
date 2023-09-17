@@ -28,11 +28,20 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'crud.admin.users.update'])->syncRoles([$admin, $manager]);
         Permission::create(['name' => 'crud.admin.users.destroy'])->syncRoles([$admin]);
 
-        Permission::create(['name' => 'crud.admin.document_types.index'])->syncRoles([$admin]);
+        // Permisos para crud de tipos de documentos
+        Permission::create(['name' => 'crud.admin.document_types.index'])->syncRoles([$admin, $manager]);
         Permission::create(['name' => 'crud.admin.document_types.create'])->syncRoles([$admin, $manager]);
         Permission::create(['name' => 'crud.admin.document_types.store'])->syncRoles([$admin, $manager]);
-        Permission::create(['name' => 'crud.admin.document_types.edit'])->syncRoles([$admin, $manager]);
+        Permission::create(['name' => 'crud.admin.document_types.edit'])->syncRoles([$admin]);
         Permission::create(['name' => 'crud.admin.document_types.update'])->syncRoles([$admin, $manager]);
         Permission::create(['name' => 'crud.admin.document_types.destroy'])->syncRoles([$admin]);
+
+        // Permisos para crud de compañías
+        Permission::create(['name' => 'crud.admin.companies.index'])->syncRoles([$admin, $manager]);
+        Permission::create(['name' => 'crud.admin.companies.create'])->syncRoles([$admin, $manager]);
+        Permission::create(['name' => 'crud.admin.companies.store'])->syncRoles([$admin, $manager]);
+        Permission::create(['name' => 'crud.admin.companies.edit'])->syncRoles([$admin, $manager]);
+        Permission::create(['name' => 'crud.admin.companies.update'])->syncRoles([$admin, $manager]);
+        Permission::create(['name' => 'crud.admin.companies.destroy'])->syncRoles([$admin, $manager]);
     }
 }

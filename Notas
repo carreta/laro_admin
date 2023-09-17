@@ -15,3 +15,5 @@ Poner mensajes en la vista después de guardar, editar o eliminar.
 Usar eloquent para los mantenimientos sencillos.
 
 Poner la paginación, y buscar como hacer para que reciba parámetros.
+
+Buscar como no perder los parámetros de la búsqueda cuando se mete a la página del edit.

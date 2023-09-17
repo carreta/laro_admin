@@ -19,5 +19,12 @@ class ViewFieldSeeder extends Seeder
             'table_names' => 'hacienda_id,name',
             'view_name' => 'Mantenimiento de tipos de documentos',
         ]);
+
+        ViewField::create([
+            'route' => 'companies',
+            'field_names' => 'Nombre,Director,Cédula,Tipo de cédula,Dirección,Correo,Latitud,Longitud,País,Provincia,Cantón,Distrito',
+            'table_names' => 'name,director,document,nameDocumentType,address,email,geo_latitud,geo_longitud,nameGeoCountry,nameGeoState,nameGeoRegion,nameGeoDistrict',
+            'view_name' => 'Mantenimiento de compañías',
+        ]);
     }
 }

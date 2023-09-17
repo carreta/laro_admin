@@ -32,7 +32,7 @@
       @endif
       <ul class="dropdown-menu">
         @for($i = 1; $i <= $collection->lastPage(); $i++)
-          <li><a class="dropdown-item" href="?page={{$i}}">Página {{$i}}</a></li>
+          <li><a class="dropdown-item" href="?{{$searchparameters}}page={{$i}}">Página {{$i}}</a></li>
         @endfor            
       </ul>
     </div>

@@ -1,86 +1,111 @@
 @extends('layouts.app')
 
 @section('content')
-<h3>Mantenimiento de compañía</h3>
+<br>
+<div class="row">
+  <div class="col-md-6">
+    <h3>{{$view_fields->view_name}}</h3>  
+  </div>
+  <div class="col-md-6">
+    <button id="btn_search" onclick="removeClass()" class="btn btn-outline-info float-end"><span class="fas fa-search"></span></button>
+  </div>
+</div>
+
+@php
+  
+  $class = 'hide';
+  $show_search_customer = true;
+  $customer_form = null;
+  $email_form = null;
+
+  if($show_search_customer == 'true'){
+    $class = '';
+  }
+
+  $customer_disabled = '';
+  $customer_check = 'checked';
+  if($customer_form == null){
+    $customer_disabled = '';
+    $customer_check = '';
+  }
+
+  $email_disabled = '';
+  $email_check = 'checked';
+  if($email_form == null){
+    $email_disabled = '';
+    $email_check = '';
+  }
+@endphp
+<div class="d-none" id="search_customer">
+  <form method="GET" action="{{action($controller . '@index')}}" accept-charset="UTF-8">
+    <div class="container">    
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <div class="custom-control custom-checkbox" style="margin-bottom: .5rem!important;">
+              <input type="checkbox" {{$customer_check}} data-target="name" class="custom-control-input checkbox" name="check_customer" id="check_customer">
+              <label class="custom-control-label" for="check_customer">Nombre:</label>
+            </div>
+            <input type="text" name="name" id="name" value="{{$customer_form}}" class="form-control" {{$customer_disabled}}>
+          </div>
+        </div>
+        <div class="col-md-6  ">
+          <div class="form-group">
+            <div class="custom-control custom-checkbox" style="margin-bottom: .5rem!important;">
+              <input type="checkbox" {{$email_check}} data-target="email" class="custom-control-input checkbox" name="check_email" id="check_email">
+              <label class="custom-control-label" for="check_email">Correo:</label>
+            </div>
+            <input type="text" name="email" id="email" value="{{$email_form}}" class="form-control" {{$email_disabled}}>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <button type="submit" class="btn btn-primary"><span class="fas fa-search"></span> Buscar</button>      
+        </div>
+      </div>
+    </div>
+  </form>
+  <br>
+</div>
+
+
 <hr>
+
+<x-alert :item="session('status')" />
 
 <div class="container-table">
   <div class="card">
     <div class="card-header">
-      <strong>
-        <span class="totalRows">2</span> filas encontradas, página <span class="currentPage">1</span> de <span class="totalPages">1</span>.
-      </strong>
-      <div class="btn-group" role="group" aria-label="...">
-          <button type="button" class="btn btn-outline-secondary btnBack disabled"><span class="fa fa-chevron-left"></span></button>
-          <button type="button" class="btn btn-outline-secondary btnNext disabled"><span class="fa fa-chevron-right"></span></button>
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-outline-secondary btnGoto dropdown-toggle disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Ir a
-            <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu ulPagination disabled"></ul>
-          </div>
-      </div>
+      <x-pagination :collection="$collection" :searchparameters="$search_parameters"/>
     
       <div class="float-end">
-        <a href='{{ url("/companies" . "/create") }}' class="btn btn-outline-success" title="Nuevo"><span class="fa fa-plus"></span></a>
-        <!-- <a href='https://alvaro.site.co.cr/uid/1/users/excel' class="btn btn-outline-info" target="_blank" data-target="export" title="Exportar resultados a Excel" ><span class="fas fa-file-excel"></span></a> -->
+        @can($permissions[1])
+          <a href='{{ url("/$view_fields->route" . "/create") }}' class="btn btn-outline-success" title="Nuevo"><span class="fa fa-plus"></span></a>
+        @endcan
       </div>
     </div>
-    <div class="card-body table-responsive" id="viewResults">
-      <table class="table table-hover" id="results">
-        <thead>
-          <tr>
-           <th>Nombre</th>
-           <th>Dirección</th>
-           <th></th>
-           <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach($companies as $company)
-         <tr>
-           <td>{{ $company->name }}</td>
-           <td>{{ $company->address }}</td>
-           <td width="40"><a href="{{action('App\Http\Controllers\crud\admin\companies\CompanyController' . '@edit', [$company->id])}}" class="btn btn-outline-secondary" title="Editar"><span class="fas fa-pencil-alt"></span></a></td>
-  	       <td width="40">
-  	         <form action="{{action('App\Http\Controllers\crud\admin\companies\CompanyController' . '@destroy', [$company->id])}}" method="post">
-  	           {{csrf_field()}}
-  	           <input name="_method" type="hidden" value="DELETE">
-  	           <button class="btn btn-outline-danger" type="submit" title="Borrar"><span class="fa fa-times"></span></button>
-  	         </form>
-  	       </td> 
-         </tr>
-          @endforeach
-        </tbody>
-      </table>
-    </div>
+    
+    <x-table :collection="$collection" :fieldnames="$field_names" :tablenames="$table_names" :controller="$controller" />
+
     <div class="card-footer">
-      <strong>
-        <span class="totalRows">2</span> filas encontradas, página <span class="currentPage">1</span> de <span class="totalPages">1</span>.
-      </strong>
-      <div class="btn-group" role="group" aria-label="...">
-            <button type="button" class="btn btn-outline-secondary btnBack disabled"><span class="fa fa-chevron-left"></span></button>
-            <button type="button" class="btn btn-outline-secondary btnNext disabled"><span class="fa fa-chevron-right"></span></button>
-            <div class="btn-group" role="group">
-              <button type="button" class="btn btn-outline-secondary btnGoto dropdown-toggle disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Ir a
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu ulPagination disabled"></ul>
-        </div>
-        </div>
-    
-    
-        
-    
+      <x-pagination :collection="$collection" :searchparameters="$search_parameters"/>
+      
       <div class="float-end">
-        <a href='{{ url("/companies" . "/create") }}' class="btn btn-outline-success" title="Nuevo"><span class="fa fa-plus "></span></a>
-        <!-- <a href="https://alvaro.site.co.cr/users/excel" class="btn btn-default btnExport" target="_blank" data-target="export" title="Exportar resultados a Excel" ><span class="fa fa-file-excel-o "></span></a> -->
-        <!--button class="btn btn-primary btnNew" data-target="new" title="Crear nuevo"><span class="fa fa-plus "></span></button-->
+        @can($permissions[1])
+          <a href='{{ url("/$view_fields->route" . "/create") }}' class="btn btn-outline-success" title="Nuevo"><span class="fa fa-plus"></span></a>
+        @endcan
       </div>
     </div>    
   </div>
 </div>
 
+<script type="text/javascript">
+  function removeClass(){
+    console.log("Funciona");
+    var e = document.getElementById('search_customer');
+    e.classList.remove("d-none");
+  }
+</script>
 @endsection
