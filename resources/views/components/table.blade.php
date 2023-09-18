@@ -3,7 +3,9 @@
     <thead>
       <tr>
         @foreach($fieldnames as $element)
-          <th>{{$element}}</th>
+          @if($element != 'Id')
+            <th>{{$element}}</th>
+          @endif
         @endforeach
         <th></th>
         <th></th>
@@ -13,7 +15,8 @@
       @for($i = 0; $i < count($collection); $i++)
         <tr>
           @for($j = 0; $j < count($tablenames); $j++)
-            <td>{{ $collection[$i][$tablenames[$j]] }}</td>
+              
+              <td>{{ $collection[$i][$tablenames[$j]] }}</td>
             @php
               $id = $collection[$i][$tablenames[0]];
             @endphp
