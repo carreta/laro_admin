@@ -17,3 +17,5 @@ Usar eloquent para los mantenimientos sencillos.
 Poner la paginación, y buscar como hacer para que reciba parámetros.
 
 Buscar como no perder los parámetros de la búsqueda cuando se mete a la página del edit.
+
+Hacer log de cambios por usuario.

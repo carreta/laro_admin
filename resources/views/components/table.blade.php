@@ -15,8 +15,9 @@
       @for($i = 0; $i < count($collection); $i++)
         <tr>
           @for($j = 0; $j < count($tablenames); $j++)
-              
-              <td>{{ $collection[$i][$tablenames[$j]] }}</td>
+              @if($tablenames[$j] != 'id')
+                <td>{{ $collection[$i][$tablenames[$j]] }}</td>
+              @endif
             @php
               $id = $collection[$i][$tablenames[0]];
             @endphp
