@@ -9,4 +9,9 @@ use Spatie\Permission\Traits\HasRoles;
 class DocumentType extends Model
 {
     use HasFactory, HasRoles;
+
+    protected $fillable = [
+        'hacienda_id',
+        'name',
+    ];
 }

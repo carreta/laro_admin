@@ -9,7 +9,8 @@
 <div class="container-table">
   <div class="card">
     <div class="card-header">
-      <x-pagination :collection="$collection"/>
+      <x-pagination :collection="$collection" :searchparameters="$search_parameters"/>
+
     
       <div class="float-end">
         @can($permissions[1])
@@ -21,7 +22,7 @@
     <x-table :collection="$collection" :fieldnames="$field_names" :tablenames="$table_names" :controller="$controller"  />
 
     <div class="card-footer">
-      <x-pagination :collection="$collection"/>
+      <x-pagination :collection="$collection" :searchparameters="$search_parameters"/>
       
       <div class="float-end">
         @can($permissions[1])
