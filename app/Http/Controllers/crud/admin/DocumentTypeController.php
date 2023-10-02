@@ -3,19 +3,23 @@
 namespace App\Http\Controllers\crud\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\UtilController;
+use App\Models\Consecutive;
 use App\Models\crud\admin\DocumentType;
 use App\Models\ViewField;
 use DB;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
-use App\Http\Controllers\UtilController;
 use Illuminate\Support\Facades\Auth;
+use Session;
+use Spatie\Permission\Models\Permission;
+
 
 class DocumentTypeController extends Controller
 {
 
     public function __construct()
     {
+        $this->incident = '1';
         $this->search_parameters = '';
         $this->middleware('can:crud.admin.document_types.index')->only('index');
         $this->middleware('can:crud.admin.document_types.create')->only('create', 'store');
@@ -38,22 +42,33 @@ class DocumentTypeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $collection = $this->collection;
-        $view_fields = $this->view_fields[0];
-        $controller = $this->controller;
-        $permissions = $this->permissions;
-        $search_parameters = $this->search_parameters;
-        
-        $array = $view_fields->field_names;
-        $field_names = explode(",", $array);
+        try {
+            $collection = $this->collection;
+            $view_fields = $this->view_fields[0];
+            $controller = $this->controller;
+            $permissions = $this->permissions;
+            $search_parameters = $this->search_parameters;
+            
+            $array = $view_fields->field_names;
+            $field_names = explode(",", $array);
 
-        $array = $view_fields->table_names;
-        $table_names = explode(",", $array);
+            $array = $view_fields->table_names;
+            $table_names = explode(",", $array);
 
-        // dd($permissions[0] . ' - ' . $permissions[1] . ' - ' . $permissions[3] . ' - ' . $permissions[5]);
-        return view('crud.admin.document_types.index', compact('collection', 'view_fields', 'controller', 'permissions', 'field_names', 'table_names', 'search_parameters'));
+            $incident = $this->incident;
+
+            if(Session::get('status') == "error"){
+                $incident = $this->util->ConsecutiveFormat(Consecutive::select('incidents')->get());
+            }
+
+
+            // dd($permissions[0] . ' - ' . $permissions[1] . ' - ' . $permissions[3] . ' - ' . $permissions[5]);
+            return view('crud.admin.document_types.index', compact('collection', 'view_fields', 'controller', 'permissions', 'field_names', 'table_names', 'search_parameters', 'incident'));            
+        } catch (\Exception $e) {
+            
+        }
     }
 
     /**
@@ -69,28 +84,14 @@ class DocumentTypeController extends Controller
      */
     public function store(Request $request)
     {
-
-        $collection = $this->collection;
-        $view_fields = $this->view_fields[0];
-        $controller = $this->controller;
-        $permissions = $this->permissions;
-        
-        $array = $view_fields->field_names;
-        $field_names = explode(",", $array);
-
-        $array = $view_fields->table_names;
-        $table_names = explode(",", $array);
-
-        $user_id = $this->user_id;        
+        $user_id = $this->user_id;
 
         try {
-            // DB::insert("INSERT INTO `document_types` (`name`, `hacienda_id`) VALUES ('" . $request->name . "', '" . $request->hacienda_id . "') ");
-
             DB::enableQueryLog();
 
             $document_type = DocumentType::create([
-                    'hacienda_id' => $request->hacienda_id,
-                    'name' => $request->name
+                'hacienda_id' => $request->hacienda_id,
+                'name' => $request->name
             ]);
 
             $document_type->save();
@@ -99,12 +100,14 @@ class DocumentTypeController extends Controller
 
             $this->util->log($this->user_id, 'document_types', 'saved', $query);
 
-            return redirect('document_types')->with('status', 'saved', 'collection', 'view_fields', 'controller', 'permissions', 'field_names', 'table_names');
-        } catch (Exception $e) {
-            return redirect('document_types')->with('status', 'error', 'collection', 'view_fields', 'controller', 'permissions', 'field_names', 'table_names');
-        }
+            return redirect('document_types')->with('status', 'saved');
+        } catch (\Exception $e) {
+            $query = $e->getMessage();
 
-        // return view('crud.admin.document_types.index', compact('document_types', 'view_fields', 'controller', 'permissions', 'field_names', 'table_names'))->withSuccess('LALA');
+            $this->util->log($this->user_id, 'document_types', 'error', $query);
+
+            return redirect('document_types')->with('status', 'error');
+        }
     }
 
     /**

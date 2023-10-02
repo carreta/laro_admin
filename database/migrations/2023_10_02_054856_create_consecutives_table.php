@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('logs', function (Blueprint $table) {
-            $table->int('consecutive')->primary()
-            $table->int('user_id');
-            $table->varchar('route', 200);
-            $table->varchar('session', 50);
-            $table->text('query');
+        Schema::create('consecutives', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();
         });
     }
@@ -26,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('logs');
+        Schema::dropIfExists('consecutives');
     }
 };

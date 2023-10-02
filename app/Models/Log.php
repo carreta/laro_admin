@@ -11,6 +11,7 @@ class Log extends Model
 
 
     protected $fillable = [
+        'incident',
         'user_id',
         'route',
         'session',

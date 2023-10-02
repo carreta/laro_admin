@@ -4,7 +4,7 @@
 <h3>{{$view_fields->view_name}}</h3>
 <hr>
 
-<x-alert :item="session('status')" />
+<x-alert :item="session('status')" :incident="$incident" />
 
 <div class="container-table">
   <div class="card">
@@ -32,5 +32,4 @@
     </div>    
   </div>
 </div>
-
 @endsection

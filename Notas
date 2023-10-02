@@ -19,3 +19,9 @@ Poner la paginación, y buscar como hacer para que reciba parámetros.
 Buscar como no perder los parámetros de la búsqueda cuando se mete a la página del edit.
 
 Hacer log de cambios por usuario.
+
+
+Probar que pasa si paso de un index a otro, y el segundo index se cae.
+Probar el log para el update y el delete.
+Crear función que siempre busque errores para notificar cuando hayan.
+Agregar campo de incident_number para brindarlo al usuario cuando haya un error.
