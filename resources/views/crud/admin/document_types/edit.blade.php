@@ -16,7 +16,7 @@
 		    </div>
 		    <div class="form-group @if($errors->has('hacienda_id')) has-error @endif">
 		      <label for="hacienda_id">Código de hacienda:</label>
-			  <input type="text" name="hacienda_id" class="form-control" placeholder="Código de hacienda" maxlength="5" required value="{{ $document_types[0]->hacienda_id }}" disabled="disabled">
+			  <input type="text" name="hacienda_id" class="form-control" placeholder="Código de hacienda" maxlength="5" required value="{{ $document_types[0]->hacienda_id }}" readonly>
 		      @if($errors->has('hacienda_id'))<p style="color: red;" class="form-text"> {{ $errors->first('hacienda_id') }} </p>  @endif
 		    </div>
 	    </div>

@@ -14,10 +14,12 @@ class UtilController extends Controller
      */
     public function log($user_id, $route, $session, $query)
     {
+        $collection = Consecutive::select('incidents')->get();
+
         if($session == "saved"){
             $position = strpos($query[0]["query"], 'values');
             $raw_query = substr($query[0]["query"], 0, $position + 8);
-            $data = DB::getQueryLog()[0]["bindings"];        
+            $data = DB::getQueryLog()[0]["bindings"];
 
             for($i = 0; $i < count($data); $i++){
                 $raw_query .= $data[$i] . ', ';
@@ -26,13 +28,35 @@ class UtilController extends Controller
             $raw_query = substr(trim($raw_query), 0, -1);
 
             $raw_query .= ")";
+
+            $query = $raw_query;
         }
 
-        
-        $incident = $this->ConsecutiveFormat(Consecutive::select('incidents')->get());        
+        if($session == "updated"){
+
+            $query = $query[0]["query"];
+
+            $data = DB::getQueryLog()[0]["bindings"];
+
+            for($i = 0; $i < count($data); $i++){
+                $position = strpos($query, '?');
+                $query = substr_replace($query, $data[$i], $position, 1);
+            }
+
+        }
+
+
+        if($session == "error"){            
+            $incident = $this->ConsecutiveFormat($collection);
+
+            $consecutive = Consecutive::find(1);
+            $consecutive->incidents = $collection[0]->incidents + 1;
+            $consecutive->save();
+        }
+
 
         $util = Log::create([
-            'incident' => $incident,
+            'incident' =>  $collection[0]->incidents,
             'user_id' => $user_id,
             'route' => $route,
             'session' => $session,
@@ -41,7 +65,7 @@ class UtilController extends Controller
 
         $util->save();
 
-        return $incident;
+
     }
 
     // 0010332106
@@ -56,11 +80,7 @@ class UtilController extends Controller
             $formated_consecutive .= '0';
         }
 
-        $formated_consecutive .= $collection[0]->incidents;
-
-        $consecutive = Consecutive::find(1);
-        $consecutive->incidents = $collection[0]->incidents + 1;
-        $consecutive->save();
+        $formated_consecutive .= $collection[0]->incidents - 1;
 
         return $formated_consecutive;
 

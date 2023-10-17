@@ -63,11 +63,15 @@ class DocumentTypeController extends Controller
                 $incident = $this->util->ConsecutiveFormat(Consecutive::select('incidents')->get());
             }
 
-
-            // dd($permissions[0] . ' - ' . $permissions[1] . ' - ' . $permissions[3] . ' - ' . $permissions[5]);
             return view('crud.admin.document_types.index', compact('collection', 'view_fields', 'controller', 'permissions', 'field_names', 'table_names', 'search_parameters', 'incident'));            
         } catch (\Exception $e) {
-            
+            $query = $e->getMessage();
+
+            dd($query);
+
+            $this->util->log($this->user_id, 'document_types', 'error', $query);
+
+            return redirect('/dashboard')->with('status', 'error');
         }
     }
 
@@ -84,8 +88,6 @@ class DocumentTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $user_id = $this->user_id;
-
         try {
             DB::enableQueryLog();
 
@@ -126,11 +128,14 @@ class DocumentTypeController extends Controller
         $view_fields = $this->view_fields[0];
 
         try {
-            // $document_types = DB::select("SELECT `hacienda_id`, `name` FROM `document_types` WHERE `hacienda_id` = '" . $id . "' ");            
-            $document_types = DocumentType::select('hacienda_id', 'name')->where('hacienda_id', $id)->get();
+            $document_types = DocumentType::select('hacienda_id', 'name')->where('hacienda_id', '=', $id)->get();
             return view('crud.admin.document_types.edit', compact('document_types', 'id', 'view_fields'));
         } catch (\Exception $e) {
-            dd($e);
+            $query = $e->getMessage();
+
+            $this->util->log($this->user_id, 'document_types', 'error', $query);
+
+            return redirect('document_types')->with('status', 'error');
         }
     }
 
@@ -139,8 +144,31 @@ class DocumentTypeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        DB::update("UPDATE `document_types` SET `name` = '" . $request->name . "' WHERE `hacienda_id` = '" . $id . "' ");
-        return redirect('document_types')->with('status', 'updated');
+
+        try {
+            // DB::update("UPDATE `document_types` SET `name` = '" . $request->name . "' WHERE `hacienda_id` = '" . $id . "' ");
+
+            DB::enableQueryLog();
+
+            // dd($request);
+
+            $document_type = DocumentType::where('hacienda_id', '=', $request->get('hacienda_id'))
+                ->update(
+                   ['name' => $request->name]
+                );
+
+            $query = DB::getQueryLog();
+
+            $this->util->log($this->user_id, 'document_types', 'updated', $query);
+
+            return redirect('document_types')->with('status', 'updated');
+        } catch (\Exception $e) {
+            $query = $e->getMessage();
+
+            $this->util->log($this->user_id, 'document_types', 'error', $query);
+
+            return redirect('document_types')->with('status', 'error');
+        }
     }
 
     /**
@@ -148,25 +176,16 @@ class DocumentTypeController extends Controller
      */
     public function destroy(string $id)
     {
-        $collection = $this->collection;
-        $view_fields = $this->view_fields[0];
-        $controller = $this->controller;
-        $permissions = $this->permissions;
-        
-        $array = $view_fields->field_names;
-        $field_names = explode(",", $array);
-
-        $array = $view_fields->table_names;
-        $table_names = explode(",", $array);
-
-
         try {
+            $document_type = DocumentType::where('hacienda_id', '=', $id)->delete();
 
-            
-            return redirect('document_types')->with('status', 'deleted', 'collection', 'view_fields', 'controller', 'permissions', 'field_names', 'table_names');
+            return redirect('document_types')->with('status', 'deleted');
         } catch (\Exception $e) {
-            dd($e);
-        }
+            $query = $e->getMessage();
 
+            $this->util->log($this->user_id, 'document_types', 'error', $query);
+
+            return redirect('document_types')->with('status', 'error');
+        }
     }
 }
