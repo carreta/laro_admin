@@ -25,3 +25,5 @@ Probar que pasa si paso de un index a otro, y el segundo index se cae.
 Probar el log para el update y el delete.
 Crear función que siempre busque errores para notificar cuando hayan.
 Agregar campo de incident_number para brindarlo al usuario cuando haya un error.
+
+Preguntar que es el customer_modules

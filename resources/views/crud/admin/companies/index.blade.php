@@ -73,7 +73,7 @@
 
 <hr>
 
-<x-alert :item="session('status')" />
+<x-alert :item="session('status')" :incident="$incident" />
 
 <div class="container-table">
   <div class="card">

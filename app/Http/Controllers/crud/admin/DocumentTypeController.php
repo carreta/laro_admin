@@ -67,8 +67,6 @@ class DocumentTypeController extends Controller
         } catch (\Exception $e) {
             $query = $e->getMessage();
 
-            dd($query);
-
             $this->util->log($this->user_id, 'document_types', 'error', $query);
 
             return redirect('/dashboard')->with('status', 'error');
